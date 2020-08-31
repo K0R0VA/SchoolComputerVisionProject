@@ -1,0 +1,267 @@
+﻿<Window x:Class="WpfApp4.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:emgu="clr-namespace:Emgu.CV.UI;assembly=Emgu.CV.UI"
+        xmlns:myimagebox="clr-namespace:WpfApp4;assembly=WpfApp4"
+        xmlns:materialDesign="http://materialdesigninxaml.net/winfx/xaml/themes"
+        mc:Ignorable="d"
+        Loaded="Window_Loaded"
+        Title="ABC" Height="900" Width="1440" ResizeMode="NoResize">
+    
+    <Grid Background="#303030">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="7*"/>
+            <ColumnDefinition Width="232*"/>
+        </Grid.ColumnDefinitions>
+
+        <TabControl Background="#303030" Grid.ColumnSpan="2">
+            <TabItem Header="Камера" Background="#FF9604DB" BorderBrush="#FF9604DB">
+                <TabItem.Effect>
+                    <DropShadowEffect ShadowDepth="3" Opacity="0.3" Color="Black"/>
+                </TabItem.Effect>
+                <Grid >
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="2*"/>
+                        <ColumnDefinition Width="*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <Grid Grid.Column="0">
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="3*"/>
+                            <RowDefinition Height="0.5*"/>
+                            <RowDefinition Height="2*"/>
+                        </Grid.RowDefinitions>
+                        <Grid Grid.Row="0" Margin="50 15">
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="7*"/>
+                                <ColumnDefinition Width="206*"/>
+                            </Grid.ColumnDefinitions>
+                            <Grid.RowDefinitions>
+                                <RowDefinition Height="36"/>
+                                <RowDefinition Height="274"/>
+                                <RowDefinition Height="*"/>
+                            </Grid.RowDefinitions>
+                            <WindowsFormsHost Name="myimg1"  Grid.Row="0" Height="250"  Width="400"  HorizontalAlignment="Left" Margin="0 30" Grid.RowSpan="2" Grid.ColumnSpan="2" >
+                                
+                            </WindowsFormsHost>
+                            <WindowsFormsHost Name="myimg2" Grid.Row="0" Height="250"  Width="400" HorizontalAlignment="Right" Margin="0,30" Grid.RowSpan="2" Grid.Column="1">
+                                
+                            </WindowsFormsHost>
+                            <Button Height="35" Width="35" Grid.Row="2" HorizontalAlignment="Left" Click="Playvid" Background="{x:Null}" BorderBrush="{x:Null}" Margin="0,42" Grid.ColumnSpan="2">
+                                <materialDesign:PackIcon Kind="Triangle" Height="25" Width="25" Foreground="#FF9705DC" RenderTransformOrigin="0.5,0.5">
+                                    <materialDesign:PackIcon.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="-90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </materialDesign:PackIcon.RenderTransform>
+                                </materialDesign:PackIcon>
+                            </Button>
+                            <Slider Grid.Row="2" HorizontalAlignment="Center" VerticalAlignment="Center" Height="30" Width="734" Margin="30,45,60,45" Grid.Column="1" Foreground="#FF989898"/>
+                            <Button Height="35" Width="35" Grid.Row="2" HorizontalAlignment="Right" BorderBrush="{x:Null}" Background="{x:Null}" Margin="0,42" Grid.Column="1">
+                                <materialDesign:PackIcon Kind="Triangle" Height="25" Width="25" Foreground="#FF9705DC" RenderTransformOrigin="0.5,0.5">
+                                    <materialDesign:PackIcon.RenderTransform>
+                                        <TransformGroup>
+                                            <ScaleTransform/>
+                                            <SkewTransform/>
+                                            <RotateTransform Angle="90"/>
+                                            <TranslateTransform/>
+                                        </TransformGroup>
+                                    </materialDesign:PackIcon.RenderTransform>
+                                </materialDesign:PackIcon>
+                            </Button>
+                        </Grid>
+                        <Grid Grid.Row="1" Background="#303030">
+                            <Button Height="35" Width="35" HorizontalAlignment="Left" Margin="375 0" BorderBrush="{x:Null}" Background="#FF444444" Click="return">
+                                <materialDesign:PackIcon Kind="Restart" Height="25" Width="25" Foreground="White">
+                                    <materialDesign:PackIcon.Effect>
+                                        <DropShadowEffect ShadowDepth="3" Opacity="0.3" />
+                                    </materialDesign:PackIcon.Effect>
+                                </materialDesign:PackIcon>
+                            </Button>
+                            <Button Height="35" Width="85" Foreground="#FF9705DC" BorderBrush="{x:Null}" Background="#FF9705DC" Click="Button_Click_1">
+                                <materialDesign:PackIcon Kind="Play" BorderThickness="1" Height="31" Width="31" Foreground="White" >
+                                    <materialDesign:PackIcon.Effect>
+                                        <DropShadowEffect ShadowDepth="3" Opacity="0.3" />
+                                    </materialDesign:PackIcon.Effect>
+                                </materialDesign:PackIcon>
+                            </Button>
+                            <Button Name="ResSquare" Height="35" Width="35" HorizontalAlignment="Right" Margin="375 0" BorderBrush="{x:Null}" Click="Button_Click" Background="#FFD64B1E">
+                                <materialDesign:PackIcon Kind="Square" Foreground="{x:Null}" BorderBrush="White" BorderThickness="1" >
+                                    <materialDesign:PackIcon.Effect>
+                                        <DropShadowEffect ShadowDepth="3" Opacity="0.3" Color="Black"/>
+                                    </materialDesign:PackIcon.Effect>
+                                </materialDesign:PackIcon>
+                            </Button>
+                        </Grid>
+                        <TabControl Grid.Row="2" Background="#303030" BorderBrush="#FF3F3F3F">
+                            <TabItem Background="#FF9604DB" BorderBrush="{x:Null}">
+                                <TabItem.Effect>
+                                    <DropShadowEffect ShadowDepth="3" Opacity="0.3" Color="Black"/>
+                                </TabItem.Effect>
+                                <TabItem.Header>
+                                    <TextBlock Foreground="Black" FontWeight="Bold" FontFamily="Roboto Lt" Text="Скорость"/>
+                                </TabItem.Header>
+                            </TabItem>
+                            <TabItem Background="#FF9604DB" BorderBrush="{x:Null}">
+                                <TabItem.Effect>
+                                    <DropShadowEffect ShadowDepth="3" Opacity="0.3" Color="Black"/>
+                                </TabItem.Effect>
+                                <TabItem.Header>
+                                    <TextBlock Foreground="Black" FontWeight="Bold" FontFamily="Roboto Lt" Text="Ускорение"/>
+                                </TabItem.Header>
+                            </TabItem>
+                            <TabItem  BorderBrush="{x:Null}" Background="#FF9604DB">
+                                <TabItem.Effect>
+                                    <DropShadowEffect ShadowDepth="3" Opacity="0.3" Color="Black"/>
+                                </TabItem.Effect>
+                                <TabItem.Header>
+                                    <TextBlock Foreground="Black" FontWeight="Bold" FontFamily="Roboto Lt" Text="Перемещение"/>
+                                </TabItem.Header>
+                            </TabItem>
+                        </TabControl>
+                    </Grid>
+                    <Border BorderThickness="1" BorderBrush="#FF3F3F3F" Grid.Column="1">
+                        <StackPanel >
+                            <Expander Cursor="Hand" >
+                                <Expander.Header>
+                                    <TextBlock Foreground="White" Text="Камера" FontWeight="Bold" FontFamily="Roboto Lt"/>
+                                </Expander.Header>
+                                <StackPanel Name="AddCamerass" Margin="20 10">
+                                    <Grid Name="SelectCameras">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"  />
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <TextBlock  FontFamily="Roboto Lt" VerticalAlignment="Center" Foreground="White">Камера 1</TextBlock>
+
+                                        </Grid>
+                                        <Grid Grid.Column="1">
+                                            <ComboBox Name="ComboBoxCameraList" Width="100" Height="25" SelectionChanged="ComboBoxCameraList_SelectionChanged"></ComboBox >
+                                        </Grid>
+                                        <Grid Grid.Column="2">
+                                            <Button  Name="AddCamera" Height="30" Width="30" BorderBrush="{x:Null}" Background="#FF444444" Click="AddCamera_Click">
+                                                <materialDesign:PackIcon Kind="Plus" Height="23" Width="23" RenderTransformOrigin="0.304,0.333" Foreground="#FF707070"/>
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid Name="SelectCameras2" Visibility="Collapsed" Margin="0 15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"  />
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0"  VerticalAlignment="Center" Name="cameracontrol2">
+                                            <TextBlock FontFamily="Roboto Lt" VerticalAlignment="Center" Foreground="White">Камера 2</TextBlock>
+                                        </Grid>
+                                        <Grid Grid.Column="1" Name="cameracombobox2">
+                                            <ComboBox Name="ComboBoxCameraList2" Width="100" Height="25" BorderBrush="White" Background="White" IsSynchronizedWithCurrentItem="True" SelectionChanged="ComboBoxCameraList2_SelectionChanged"/>
+                                        </Grid>
+                                        <Grid Grid.Column="2" Name="cameraremover">
+                                            <Button Name="AddCamera2" Height="30" Width="30" BorderBrush="{x:Null}" Background="#FF444444" Click="AddCamera2_Click">
+                                                <materialDesign:PackIcon Kind="Minus" Height="20" Width="20" Foreground="#FF707070"/>
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </Expander>
+                            <Expander Cursor="Hand">
+                                <Expander.Header >
+                                    <TextBlock Foreground="White" Text="Калибровка цвета" FontWeight="Bold" FontFamily="Roboto Lt"/>
+                                </Expander.Header>
+                                <StackPanel Margin="20 10">
+                                    <Grid>
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"  />
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0">
+                                            <Ellipse Width="10" HorizontalAlignment="Left" Height="10" Fill="Lime"></Ellipse>
+                                            <TextBox Margin="30 0" FontFamily="Roboto Lt" VerticalAlignment="Center" Foreground="White" Text="Объект 1" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                                            
+                                        </Grid>
+                                        <Grid Grid.Column="1">
+                                            <Button Height="25" Width="85" Foreground="#FF9705DC" BorderBrush="{x:Null}" Background="#FF9705DC" Click="first_object"> 
+                                                <TextBlock   Foreground="White" Text="Выделить">
+                                                    <TextBlock.Effect>
+                                                        <DropShadowEffect ShadowDepth="3" Opacity="0.3" />
+                                                    </TextBlock.Effect>
+                                                </TextBlock>
+                                            </Button>
+
+                                        </Grid>
+                                        <Grid Grid.Column="2">
+                                            <Button Height="30" Width="30" BorderBrush="{x:Null}" Background="#FF444444">
+                                                <materialDesign:PackIcon Kind="Plus" Height="23" Width="23" RenderTransformOrigin="0.304,0.333" Foreground="#FF707070"/>
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                    <Grid  Visibility="Visible" Margin="0 15">
+                                        <Grid.ColumnDefinitions>
+                                            <ColumnDefinition Width="auto"  />
+                                            <ColumnDefinition Width="*"/>
+                                            <ColumnDefinition Width="*"/>
+                                        </Grid.ColumnDefinitions>
+                                        <Grid Grid.Column="0"  VerticalAlignment="Center">
+                                            <Ellipse Width="10" HorizontalAlignment="Left" Height="10" Fill="Red"></Ellipse>
+                                            <TextBox Margin="30 0" FontFamily="Roboto Lt" VerticalAlignment="Center" Foreground="White" Text="Объект 2" Background="{x:Null}" BorderBrush="{x:Null}"/>
+                                        </Grid>
+                                        <Grid Grid.Column="1">
+                                            <Button Height="25" Width="85" Foreground="#FF9705DC" BorderBrush="{x:Null}" Background="#FF9705DC">
+                                                <TextBlock   Foreground="White" Text="Выделить">
+                                                    <TextBlock.Effect>
+                                                        <DropShadowEffect ShadowDepth="3" Opacity="0.3" />
+                                                    </TextBlock.Effect>
+                                                </TextBlock>
+                                            </Button>
+                                        </Grid>
+                                        <Grid Grid.Column="2" >
+                                            <Button Height="30" Width="30" BorderBrush="{x:Null}" Background="#FF444444">
+                                                <materialDesign:PackIcon Kind="Minus" Height="20" Width="20" Foreground="#FF707070"/>
+                                            </Button>
+                                        </Grid>
+                                    </Grid>
+                                </StackPanel>
+                            </Expander>
+                            <Expander>
+                                <Expander.Header>
+                                    <TextBlock Foreground="White" Text="Фильтр" FontWeight="Bold" FontFamily="Roboto Lt"/>
+                                </Expander.Header>
+                            </Expander>
+                            <Expander>
+                                <Expander.Header>
+                                    <TextBlock Foreground="White" Text="Запись" FontWeight="Bold" FontFamily="Roboto Lt"/>
+                                </Expander.Header>
+                            </Expander>
+                            <Expander>
+                                <Expander.Header>
+                                    <TextBlock Foreground="White" Text="Расширенные настройки" FontWeight="Bold" FontFamily="Roboto Lt"/>
+                                </Expander.Header>
+                            </Expander>
+
+                        </StackPanel>
+                    </Border>
+                </Grid>
+
+
+            </TabItem>
+            <TabItem Header="График" Background="#FF9604DB" BorderBrush="#FF9604DB">
+                <TabItem.Effect>
+                    <DropShadowEffect ShadowDepth="3" Opacity="0.3" Color="Black"/>
+                </TabItem.Effect>
+            </TabItem>
+            <TabItem Header="3D" Background="#FF9604DB" BorderBrush="#FF9604DB">
+                <TabItem.Effect>
+                    <DropShadowEffect ShadowDepth="3" Opacity="0.3" Color="Black"/>
+                </TabItem.Effect>
+            </TabItem>
+        </TabControl>
+    </Grid>
+</Window>
