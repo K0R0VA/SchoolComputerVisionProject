@@ -1,0 +1,456 @@
+# coding=Windows-1251
+#:import FadeTransition kivy.uix.screenmanager.FadeTransition
+#:import Factory kivy.factory.Factory
+<ScreenManager>:
+    id: manager
+    transition: FadeTransition()
+    main: main
+    onecam: onecam
+    twocam: twocam
+    scrncond:scrncond
+    analyse:analyse
+    cal1:cal1
+    cal2:cal2
+    MainScreen:
+        id: main
+        name: 'main'
+        manager:manager
+        Label:
+            opacity: 0
+            id:scrncond
+            text: root.current
+    OneCamScreen:
+        id: onecam
+        name: 'onecam'
+        manager:manager
+    TwoCamScreen:
+        id: twocam
+        name: 'twocam'
+        manager:manager
+    AnalyseScreen:
+        id: analyse
+        name: 'analyse'
+        manager:manager
+
+    CalibrateCam1Screen:
+        id: cal1
+        name: 'cal1'
+        manager:manager
+    CalibrateCam2Screen:
+        id: cal2
+        name: 'cal2'
+        manager:manager
+
+
+<MainScreen>:
+    id: main
+    cam_amount:cam_amount
+
+    
+
+
+    BoxLayout:
+        orientation:'vertical'
+        cols: 3
+        Label:
+            size_hint:1, .25
+            text: 'NARFU SIGHT'
+            font_size:35
+            color:.19,.67,.88,1
+        BoxLayout:
+            orientation: 'horizontal'
+            cols: 2
+            size_hint:1, .5
+            BoxLayout:
+                orientation: 'vertical'
+                Button:
+                    on_release: app.root.current ='cal1'
+                    on_release: cam_amount.text ='1'
+                    text:'1 Камера'
+
+                Button:
+                    on_release: app.root.current ='cal1'
+                    on_release: cam_amount.text ='2'
+                    text:'2 Камеры'
+            Button:
+                text:'Загрузить проект'
+        Label:
+            text:'1'
+            id:cam_amount
+            size_hint:1, .2
+
+<OneCamScreen>:
+    wrapper:wrapper
+    Wrapper:
+        id: wrapper
+
+<TwoCamScreen>:
+    wrapper2:wrapper2
+    Wrapper2:
+        id: wrapper2
+
+
+<AnalyseScreen>:
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            text:'Анализ данных и сохранение'
+            size_hint:1, .1
+        GridLayout:
+            cols:2
+            size_hint:1, .9
+            Button:
+                text:'3D 2 объект'
+                id:show3d
+                on_release: root.show3d2()
+            Button:
+                text:'3D 1 объект'
+                id:show3d
+                on_release: root.show3d()
+            Button:
+                text:'График скорости'
+                on_release: root.ShowSpeedChart()
+            Button:
+                text: 'Открыть таблицу с исходными данными'
+                on_release: root.StartExcel()
+            Button:
+                text: 'График x(t)'
+                on_release: root.StartVideo()
+            Button:
+                text: 'График y(t)'
+                on_release: root.xt_yt()
+
+        BoxLayout:
+            orientation:'horizontal'
+            size_hint:1, .1
+            Button:
+                text:'Назад'
+                on_release: app.root.current ='onecam'
+            Button:
+                text:'Поделиться'
+
+<MyPopup@Popup>:
+    popup:popup
+    Popup_content:
+        id:popup
+
+<CalibrateCam1Screen>:
+    cam:cam
+    qr_w:qr_w
+    qr_h:qr_h
+    qr_dist:qr_dist
+    heightFirst:heightFirst
+    widthFirst:widthFirst
+    widthSecond:widthSecond
+    heightSecond:heightSecond
+    Label:
+        text:Factory.MyPopup().popup.obj1h.text
+        opacity:0
+        id:heightFirst
+    Label:
+        text:Factory.MyPopup().popup.obj1w.text
+        opacity:0
+        id:widthFirst
+    Label:
+        text:Factory.MyPopup().popup.obj2w.text
+        opacity:0
+        id:widthSecond
+    Label:
+        text:Factory.MyPopup().popup.obj2h.text
+        opacity:0
+        id:heightSecond
+
+    BoxLayout:
+        orientation:'vertical'
+        rows:4
+        BoxLayout:
+            size_hint:1, .1
+            orientation:'horizontal'
+            cols:3
+            Label:
+                text:'Калибровка камеры 1'
+                font_size: 24
+            Button:
+                text:'?'
+            Button:
+                text:'QR'
+        Image:
+            size_hint:1, .7
+            id:cam
+            size: self.texture_size
+        BoxLayout:
+            size_hint:1, .1
+            orientation:'horizontal'
+            cols:6
+            spacing:5
+            Label:
+                text:'Ширина/Высота QR (мм)'
+            TextInput:
+                id:qr_w
+                text:'205'
+            Label:
+                text:'QR ID'
+            TextInput:
+                id:qr_h
+                text:'671'
+            Label:
+                text:'Дистанция (мм)'
+            TextInput:
+                id:qr_dist
+                text:'610'
+        BoxLayout:
+            size_hint:1, .1
+            orientation:'horizontal'
+            cols:3
+            spacing: 20
+            Button:
+                text: 'Назад'
+                on_release: app.root.current ='main'
+            Button:
+                text: 'Указать размеры объекта отслеживания'
+                on_release: Factory.MyPopup().open()
+            Button:
+                text: 'Перейти к выделению'
+                on_release: app.root.current ='onecam'
+
+
+<Popup_content>:
+    id:popup
+    obj1h:obj1h
+    obj2h:obj2h
+    obj1w:obj1w
+    obj2w:obj2w
+    save_obj_param_btn:save_obj_param_btn
+    orientation:'vertical'
+    Label:
+        size_hint:1, .1
+        text:"Выделите объект или укажите его размеры"
+    GridLayout:
+        cols:2
+        Label:
+            text:'Объект 1'
+        Label:
+            text:'Объект 2'
+        Label:
+            text:'Высота(мм)'
+        Label:
+            text:'Высота(мм)'
+        TextInput:
+            id: obj1h
+            text:'35'
+        TextInput:
+            id: obj2h
+            text:'1'
+        Label:
+            text:'Ширина(мм)'
+        Label:
+            text:'Ширина(мм)'
+        TextInput:
+            id: obj1w
+            text:'55'
+        TextInput:
+            id: obj2w
+            text:'1'
+        BoxLayout:
+            orientation:'horizontal'
+            Button:
+                text:'Сохранить'
+                id:save_obj_param_btn
+                on_release: app.root.cal1.heightFirst.text = obj1h.text
+                on_release: app.root.cal1.widthFirst.text = obj1w.text
+                on_release: app.root.cal1.heightSecond.text = obj2h.text
+                on_release: app.root.cal1.widthSecond.text = obj2w.text
+                on_release: Factory.MyPopup().dismiss()
+<Wrapper>:
+    hue: hue
+    saturation: saturation
+    value:value
+    hue2: hue2
+    blur1:blur1
+    saturation2: saturation2
+    value2:value2
+    cam1: cam1
+    recbtn:recbtn
+    colorpick:colorpick
+    colorpick2:colorpick2
+    colorpick3:colorpick3
+    colorpick4:colorpick4
+    blur:blur
+    seconds:seconds
+    save_btn:save_btn
+    orientation: 'vertical'
+    BoxLayout:
+        orientation:'vertical'
+        rows:3
+        BoxLayout:
+            size_hint:1, .1
+            orientation: 'horizontal'
+            cols:2
+            Label:
+                text:'Выделение объекта с одной камерой'
+                size_hint:.95, 1
+            Button:
+                text:'?'
+                size_hint:.05, 1
+        BoxLayout:
+            orientation: 'horizontal'
+            cols:2
+            BoxLayout:
+                size_hint:.6, 1
+                orientation: 'vertical'
+                spacing:20
+                padding:25
+                Image:
+                    size_hint:1, .9
+                    id:cam1
+                    size: self.texture_size
+                BoxLayout:
+                    size_hint:1, .1
+                    spacing: 20
+                    padding: 5
+                    Button:
+                        text: 'Настройка камеры'
+                    Button:
+                        id:recbtn
+                        text: 'Запись'
+                        on_release: root.record()
+                    Button:
+                        text: 'Сбросить'
+                        on_release: root.ResetWatch()
+                    Label:
+                        id:seconds
+                        text: '0:00'
+            TabbedPanel:
+                size_hint:.4, 1
+                do_default_tab: False
+                TabbedPanelItem:
+                    text: 'Объект 1'
+                    GridLayout:
+                        cols:3
+                        Image:
+                            size_hint:.5,.5
+                            id:colorpick2
+                        Label:
+                            text:'Объект 1'
+                        Image:
+                            size_hint:.5,.5
+                            id:colorpick
+                        Label:
+                            size_hint:.1, 1
+                            text:'R:'
+                            color: 1,0,0,1
+                        RangeSlider:
+                            size_hint:.8, 1
+                            id: hue
+                            min: 0
+                            max: 255
+                            step: 1
+                            on_touch_move:root.ColorPicklistener()
+                        Label:
+                            size_hint:.1, 1
+                            text: str(hue.value)
+                        Label:
+                            text:'G:'
+                            color: 0,1,0,1
+                        RangeSlider:
+                            id: saturation
+                            min: 0
+                            max: 255
+                            step: 1
+                            on_touch_move:root.ColorPicklistener()
+                        Label:
+                            text: str(saturation.value)
+                        Label:
+                            text:'B:'
+                            color: 0,0,1,1
+                        RangeSlider:
+                            id: value
+                            min: 0
+                            max: 255
+                            step: 1
+                            on_touch_move:root.ColorPicklistener()
+                        Label:
+                            text: str(value.value)
+                        Label:
+                            text:'Размытие:'
+                            color: 1,1,1,1
+                        Slider:
+                            id: blur
+                            min: 1
+                            max: 99
+                            step: 2
+                            on_touch_move: blur1.value =blur.value
+                        Label:
+                            text: str(blur.value)
+                TabbedPanelItem:
+                    text: 'Объект 2'
+                    GridLayout:
+                        cols:3
+                        Image:
+                            size_hint:1,1
+                            id:colorpick4
+                        Label:
+                            text:'Объект 2'
+                        Image:
+                            size_hint:1,1
+                            id:colorpick3
+                        Label:
+                            size_hint:.1, 1
+                            text:'R:'
+                            color: 1,0,0,1
+                        RangeSlider:
+                            size_hint:.8, 1
+                            text: 0
+                            id: hue2
+                            min: 0
+                            max: 255
+                            step: 1
+                            on_touch_move:root.ColorPicklistener()
+                        Label:
+                            size_hint:.1, 1
+                            text: str(hue2.value)
+                        Label:
+                            text:'G:'
+                            color: 0,1,0,1
+                        RangeSlider:
+                            id: saturation2
+                            text: 0
+                            min: 0
+                            max: 255
+                            step: 1
+                            on_touch_move:root.ColorPicklistener()
+                        Label:
+                            text: str(saturation2.value)
+                        Label:
+                            text:'B:'
+                            color: 0,0,1,1
+                        RangeSlider:
+                            id: value2
+                            text: 0
+                            min: 0
+                            max: 255
+                            step: 1
+                            on_touch_move:root.ColorPicklistener()
+                        Label:
+                            text: str(value2.value)
+                        Label:
+                            text:'Размытие:'
+                            color: 1,1,1,1
+                        Slider:
+                            id: blur1
+                            min: 1
+                            max: 99
+                            step: 2
+                            on_touch_move: blur.value =blur1.value
+                        Label:
+                            text: str(blur1.value)
+        BoxLayout:
+            size_hint:1, .1
+            Button:
+                text: 'Назад'
+                on_release: app.root.current ='cal1'
+            Button:
+                id: save_btn
+                text: 'Сохранить'
+                on_release: app.root.current ='analyse'
+                on_release: root.savebtn()
